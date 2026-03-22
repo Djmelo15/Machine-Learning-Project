@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import numpy as np
+import pandas as pd
+#because the data has no column names we need to add them
+columns = [
+    "age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal", "num"
+]
+# this is to test if we can see the first 5 rows of the data with the column names we will remove later
+df = pd.read_csv("Data/heart.csv", names=columns)
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+#replaces all "?"/missing data to actual missing values
+df.replace("?", pd.NA, inplace=True)
+df = df.apply(pd.to_numeric)
+#We are using Binary classification so this converts anything above 0 into a 1 which mean Heart disease
+def convert(x):
+    if x > 0:
+        return 1
+    else:
+        return 0
+# this shows the count of patients with and without heart disease
+df["num"] = df["num"].apply(convert)
+print(df["num"].value_counts())
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('Dajuan Johnson')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# this shows where the missing values are we (will remove later)
+print(df.isnull().sum())
+# Replace the missing values with the median values of the data because the mean is sensitive to outliers, and so we don't drop rows
+df["ca"] = df["ca"].fillna(df["ca"].median())
+df["thal"] = df["thal"].fillna(df["thal"].median())
+#I did this again to show that there are no missing values anymore (will probably remove)
+print(df.isnull().sum())
