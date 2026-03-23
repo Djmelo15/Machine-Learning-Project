@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 #because the data has no column names we need to add them
 columns = [
     "age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal", "num"
@@ -27,3 +30,51 @@ df["ca"] = df["ca"].fillna(df["ca"].median())
 df["thal"] = df["thal"].fillna(df["thal"].median())
 #I did this again to show that there are no missing values anymore (will probably remove)
 print(df.isnull().sum())
+
+class_count = df["num"].value_counts().sort_index()
+# Class Distribution graph for numer of patients with and without Heart diseases
+plt.figure(figsize=(8, 5))
+plt.bar(class_count.index, class_count.values)
+plt.xlabel("Heart Disease Presence")
+plt.ylabel("Number of Patients")
+plt.title("Class Distribution of Heart Diseases")
+plt.xticks([0, 1], ["No Disease", "Diseases"])
+plt.show()
+#Histogram of age range of patients
+plt.figure(figsize=(8, 5))
+plt.hist(df["age"], bins=10)
+plt.xlabel("Age")
+plt.ylabel("Frequency")
+plt.title("Histogram of patients Age")
+plt.show()
+# Histogram of Chol of patients
+plt.figure(figsize=(8, 5))
+plt.hist(df["chol"], bins=10)
+
+plt.xlabel("Cholesterol (mg/dl)")
+plt.ylabel("Frequency")
+plt.title("Histogram of patients Cholesterol level")
+plt.show()
+#Histogram of Resting blood pressure
+plt.figure(figsize=(8,5))
+plt.hist(df["trestbps"], bins=10)
+
+plt.xlabel("Resting Blood Pressure (mm Hg)")
+plt.ylabel("Frequency")
+plt.title("Distribution of Resting Blood Pressure")
+plt.show()
+
+#Histogram of max BPM
+plt.figure(figsize=(8,5))
+plt.hist(df["thalach"], bins=10)
+
+plt.xlabel("Maximum Heart Rate (bpm)")
+plt.ylabel("Frequency")
+plt.title("Distribution of Maximum Heart Rate")
+
+plt.show()
+#Heatmap to show which variables are associated with each other
+plt.figure(figsize=(12,8))
+sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f")
+plt.title("Heatmap of Heart Disease Dataset")
+plt.show()
