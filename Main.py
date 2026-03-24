@@ -73,7 +73,7 @@ plt.ylabel("Frequency")
 plt.title("Distribution of Maximum Heart Rate")
 
 plt.show()
-#Heatmap to show which variables are associated with each other
+#Heatmap to show which variables are associated with heart disease
 plt.figure(figsize=(12,8))
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f")
 plt.title("Heatmap of Heart Disease Dataset")
