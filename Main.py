@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 #because the data has no column names we need to add them
 columns = [
@@ -78,3 +80,16 @@ plt.figure(figsize=(12,8))
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f")
 plt.title("Heatmap of Heart Disease Dataset")
 plt.show()
+
+#Define features and target
+X = df.drop("num", axis=1)
+y = df["num"]
+#Splting data into training and test data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+# Scaling features
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
